@@ -2,13 +2,13 @@
 ##Intro
 A date picker for [Vuejs](https://github.com/vuejs/vue/ "Vue"), it's still in developing.
 ##Progress
-- Show Year & Month & Date <font color=green>Done</font>
-- Prev Month & Next Month <font color=green>Done</font>
-- Date Checker <font color=green>Done</font>
-- Save result to model <font color=red>In Progress</font>
-- Month Panel & Year Panel <font color=red>In Progress</font>
-- Build with Webpack <font color=red>In Progress</font>
-- Make it as a Plug-in of Vue <font color=red>In Progress</font>
-- Rewirte style with Bootstrap <font color=orange>Maybe</font>
-- Make it Responsive <font color=orange>Maybe</font>
-- Time Picker <font color=orange>Maybe</font>
+- Show Year & Month & Date __[Done]__
+- Prev Month & Next Month __[Done]__
+- Date Checker __[Done]__
+- Save result to model __[In Progress]__
+- Month Panel & Year Panel __[In Progress]__
+- Build with Webpack __[In Progress]__
+- Make it as a Plug-in of Vue __[In Progress]__
+- Rewirte style with Bootstrap __[Maybe__]
+- Make it Responsive __[Maybe]__
+- Time Picker __[Maybe]__
