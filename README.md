@@ -2,9 +2,35 @@
 ##Intro
 A date picker for [Vuejs](https://github.com/vuejs/vue/ "Vue"), it's still in developing.
 ##Usage
+HTML:
 ```html
 <input v-model="your-model" type="text" readonly v-on:focus="showCalendar($event,parent,'child')">
 ```
+parent should be a __variable__ and child should be a __string__, so that __parent[child]__ can read your property.
+
+```html
+<datepicker v-ref:datepicker></datepicker>
+<script src="path/to/vue-datepicker.js"></script>
+<script type="text/javascript">
+	var app = new Vue({
+		el:"your-el",
+		data:{
+			date:'2016-2-9'
+		},
+		methods:{
+			showCalendar:function(e,parent,child){
+				this.$refs.datepicker.parent = parent;
+				this.$refs.datepicker.child = child;
+				this.$refs.datepicker.show = true;
+				this.$refs.datepicker.callback = function(result){
+					console.log(result);
+				}
+			}
+		}
+	});
+</script>
+```
+You can also see demo in [here](https://github.com/galenyuan/vue-datepicker/tree/master/demo "Demo")
 ##Progress
 - Show Year & Month & Date __[Done]__
 - Prev Month & Next Month __[Done]__
