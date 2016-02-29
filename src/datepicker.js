@@ -20,9 +20,15 @@ module.exports = {
 		this.render();
 	},
 	methods:{
+		init:function(){
+			this.current.year = 0;
+			this.current.moneth = 0;
+			this.current.date = 0;
+			this.current.weekDay = 0;
+		},
 		render:function(model){
 			if(model){
-				var currentDate = new Date(model);
+				var currentDate = this.inputDate(model);
 			}else{
 				var currentDate = new Date();
 			}
@@ -72,7 +78,8 @@ module.exports = {
 				this.current.year--;
 			}
 			this.current.date = 1;
-			var prevDate = new Date(this.current.year,this.current.month-1,this.current.date)
+			var d = new Date(this.current.year,this.current.month-1,this.current.date);
+			var prevDate = this.outputDate(d)
 			this.render(prevDate);
 		},
 		nextMonth:function(currentMonth){
@@ -82,20 +89,43 @@ module.exports = {
 				this.current.year++;
 			}
 			this.current.date = 1;
-			var nextDate = new Date(this.current.year,this.current.month-1,this.current.date)
+			var d = new Date(this.current.year,this.current.month-1,this.current.date);
+			var nextDate = this.outputDate(d);
 			this.render(nextDate);
+		},
+		inputDate:function(str){
+			var a,r;
+			a = str.split('-');
+			a[1] = parseInt(a[1]);
+			a[1]--;
+			r = new Date(a[0],a[1],a[2]);
+			return r;
+		},
+		outputDate:function(date){
+			var r,y,m,d;
+			y = date.getFullYear();
+			m = date.getMonth();
+			d = date.getDate();
+			m++;
+			r = y+'-'+m+'-'+d;
+			return r;
 		},
 		confirmDate:function(){
 			this.show = false;
-			var result = new Date(this.current.year,this.current.month-1,this.current.date).toLocaleDateString();
+			var a = new Date(this.current.year,this.current.month-1,this.current.date);
+			var result = this.outputDate(a);
+			this.result = result;
 			this.parent[this.child] = result;
 			this.callback(result);
+		},
+		cancel:function(){
+			this.init();
+			this.show = false;
 		}
 	},
 	watch:{
 		'show':function(newVal,oldVal){
 			if(newVal && this.parent[this.child]){
-				console.log(this.$el)
 				this.render(this.parent[this.child]);
 			}
 		}

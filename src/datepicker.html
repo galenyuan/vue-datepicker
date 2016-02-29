@@ -19,6 +19,7 @@
 		<div class="calendar-item disabled" v-for="dateItem in afterDateList" track-by="$index">{{dateItem}}</div>
 	</div>
 	<div class="calendar-footer">
+		<a href="javascript:void(0)" v-on:click="cancel">Cancel</a>
 		<a href="javascript:void(0)" v-on:click="confirmDate">Confirm</a>
 	</div>
 </div>
@@ -39,7 +40,7 @@
 	}
 	.calendar-footer {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
 		height:40px;
 		line-height: 40px;
 		border:1px solid #000;
