@@ -1,6 +1,10 @@
 # Vue-DatePicker
 ##Intro
 A date picker for [Vuejs](https://github.com/vuejs/vue/ "Vue"), it's still in developing.
+##Usage
+```html
+<input v-model="your-model" type="text" readonly v-on:focus="showCalendar($event,parent,'child')">
+```
 ##Progress
 - Show Year & Month & Date __[Done]__
 - Prev Month & Next Month __[Done]__

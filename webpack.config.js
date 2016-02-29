@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./main.js",
+    entry: "./src/datepicker.js",
     output: {
         path: './build',
         filename: "app.js"

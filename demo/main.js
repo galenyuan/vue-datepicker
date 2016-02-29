@@ -1,6 +1,4 @@
-var datePicker = require('./src/datepicker.js');
-Vue.component('datepicker', datePicker);
-global.app = new Vue({
+var app = new Vue({
 	el:"#wrap",
 	data:{
 		dateResult:'',

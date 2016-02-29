@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Vue Calendar</title>
+</head>
+<body>
+<div id="wrap">
+	<input v-model="date" type="text" readonly v-on:focus="showCalendar($event,this,'date')">
+	<datepicker v-ref:datepicker></datepicker>
+</div>
+<script src="../lib/vue.js"></script>
+<script src="../vue-datepicker.js"></script>
+<script type="text/javascript">
+	var app = new Vue({
+		el:"#wrap",
+		data:{
+			dateResult:'',
+			date:'2016-2-9'
+		},
+		methods:{
+			showCalendar:function(e,parent,child){
+				this.$refs.datepicker.parent = parent;
+				this.$refs.datepicker.child = child;
+				this.$refs.datepicker.show = true;
+				this.$refs.datepicker.callback = function(result){
+					console.log(result);
+				}
+			}
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-module.exports = {
+Vue.component('datepicker', {
 	template: require('./datepicker.html'),
 	replace: true,
 	inherit: true,
@@ -130,4 +130,4 @@ module.exports = {
 			}
 		}
 	}
-}
+});
