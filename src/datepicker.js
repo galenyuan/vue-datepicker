@@ -86,9 +86,18 @@ module.exports = {
 			this.render(nextDate);
 		},
 		confirmDate:function(){
+			this.show = false;
 			var result = new Date(this.current.year,this.current.month-1,this.current.date).toLocaleDateString();
 			this.parent[this.child] = result;
 			this.callback(result);
+		}
+	},
+	watch:{
+		'show':function(newVal,oldVal){
+			if(newVal && this.parent[this.child]){
+				console.log(this.$el)
+				this.render(this.parent[this.child]);
+			}
 		}
 	}
 }

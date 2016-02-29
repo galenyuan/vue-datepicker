@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="wrap">
-	<input v-model="date" type="text" readonly v-on:focus="showCalendar(this,'date')">
+	<input v-model="date" type="text" readonly v-on:focus="showCalendar($event,this,'date')">
 	<datepicker v-ref:datepicker></datepicker>
 </div>
 <script src="vendor/vue.js"></script>

@@ -3,10 +3,11 @@ Vue.component('datepicker', datePicker);
 global.app = new Vue({
 	el:"#wrap",
 	data:{
-		date:'test'
+		date:'2016-2-9'
 	},
 	methods:{
-		showCalendar:function(parent,child){
+		showCalendar:function(e,parent,child){
+			var ele = e.$target;
 			this.$refs.datepicker.parent = parent;
 			this.$refs.datepicker.child = child;
 			this.$refs.datepicker.show = true;
