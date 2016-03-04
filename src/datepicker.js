@@ -5,6 +5,8 @@ Vue.component('datepicker', {
 	data:function(){
 		return {
 			show:false,
+			x:0,
+			y:0,
 			current:{
 				year:0,
 				month:0,

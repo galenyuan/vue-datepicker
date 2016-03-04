@@ -1,8 +1,8 @@
 module.exports = {
     entry: "./src/datepicker.js",
     output: {
-        path: './build',
-        filename: "app.js"
+        path: './',
+        filename: "vue-datepicker.js"
     },
     module: {
         loaders: [

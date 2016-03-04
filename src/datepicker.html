@@ -1,4 +1,4 @@
-<div id="vue-datepicker" v-if="show">
+<div id="vue-datepicker" v-bind:style="{left: x, top: y}" v-if="show">
 	<div class="calendar-title">
 		<a href="javascript:void(0)" class="arrow-left" v-on:click="prevMonth(current.month)"><-</a>
 		{{current.year}}-{{current.month}}-{{current.date}}
@@ -24,9 +24,9 @@
 	</div>
 </div>
 <style type="text/css">
-	#wrap {
+	#vue-datepicker {
 		width:295px;
-		margin:0 auto;
+		position: fixed;
 	}
 	.calendar-title {
 		display: flex;
