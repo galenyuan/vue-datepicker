@@ -22,6 +22,8 @@ parent should be a __variable__ and child should be a __string__, so that __pare
 				this.$refs.datepicker.parent = parent;
 				this.$refs.datepicker.child = child;
 				this.$refs.datepicker.show = true;
+				this.$refs.datepicker.x = e.target.offsetLeft;
+	            this.$refs.datepicker.y = e.target.offsetTop + e.target.offsetHeight + 10;
 				this.$refs.datepicker.callback = function(result){
 					console.log(result);
 				}
