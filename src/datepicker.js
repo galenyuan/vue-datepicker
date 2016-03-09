@@ -7,6 +7,11 @@ Vue.component('datepicker', {
 			show:false,
 			x:0,
 			y:0,
+			view:{
+				dateView:false,
+				monthView:false,
+				yearView:false
+			},
 			current:{
 				year:0,
 				month:0,
