@@ -2,6 +2,12 @@ Vue.component('datepicker', {
 	template: require('./datepicker.html'),
 	replace: true,
 	inherit: true,
+	props:{
+		model: {
+			type:String,
+			required:true
+		}
+	},
 	data:function(){
 		return {
 			show:false,
@@ -25,6 +31,7 @@ Vue.component('datepicker', {
 	},
 	created:function(){
 		this.render();
+		console.log(this.model)
 	},
 	methods:{
 		init:function(){
@@ -122,7 +129,7 @@ Vue.component('datepicker', {
 			var a = new Date(this.current.year,this.current.month-1,this.current.date);
 			var result = this.outputDate(a);
 			this.result = result;
-			this.parent[this.child] = result;
+			this.model = result;
 			this.callback(result);
 		},
 		cancel:function(){
@@ -132,8 +139,8 @@ Vue.component('datepicker', {
 	},
 	watch:{
 		'show':function(newVal,oldVal){
-			if(newVal && this.parent[this.child]){
-				this.render(this.parent[this.child]);
+			if(newVal && this.model){
+				this.render(this.model);
 			}
 		}
 	}
