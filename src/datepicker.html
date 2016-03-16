@@ -1,10 +1,19 @@
 <div id="vue-datepicker" v-bind:style="{left: x, top: y}" v-if="show">
-	<div class="calendar-date-view">
-		<div class="calendar-title">
-			<a href="javascript:void(0)" class="arrow-left" v-on:click="prevMonth(current.month)"><-</a>
-			{{current.year}}-{{current.month}}-{{current.date}}
-			<a href="javascript:void(0)" class="arrow-right" v-on:click="nextMonth(current.month)">-></a>
+	<div class="calendar-title">
+		<div class="calendar-title-date" v-show="view.dateView">
+			<a href="javascript:;" class="arrow-left" v-on:click="prevMonth(current.month)">
+				<-</a>
+					<a href="javascript:;" v-on:click="togglePanel('month')">{{current.year}}-{{current.month}}<span v-show="current.date">-{{current.date}}</span></a>
+					<a href="javascript:;" class="arrow-right" v-on:click="nextMonth(current.month)">-></a>
 		</div>
+		<div class="clendar-title-month" v-show="view.monthView">
+			{{current.year}}
+		</div>
+		<div class="clanedar-title-year" v-show="view.yearView">
+
+		</div>
+	</div>
+	<div class="calendar-date-view" v-show="view.dateView">
 		<div class="calendar-week">
 			<div class="calendar-item">Sun</div>
 			<div class="calendar-item">Mon</div>
@@ -20,64 +29,95 @@
 			<div class="calendar-item disabled" v-for="dateItem in afterDateList" track-by="$index">{{dateItem}}</div>
 		</div>
 		<div class="calendar-footer">
-			<a href="javascript:void(0)" v-on:click="cancel">Cancel</a>
-			<a href="javascript:void(0)" v-on:click="confirmDate">Confirm</a>
+			<a href="javascript:;" v-on:click="cancel">Cancel</a>
+			<a href="javascript:;" v-on:click="confirmDate">Confirm</a>
 		</div>
 	</div>
-	<div class="clendar-month-view" v-show="view.monthView"></div>
+	<div class="clendar-month-view calendar-panel" v-show="view.monthView">
+		<div class="calendar-item" v-for="item in monthList" v-on:click="chooseMonth(item)">
+			{{item.text}}
+		</div>
+	</div>
 	<div class="clendar-year-view" v-show="view.yearView"></div>
 </div>
 <style type="text/css">
 	#vue-datepicker {
-		width:295px;
+		width: 294px;
 		position: fixed;
 	}
+
 	.calendar-title {
+		height: 50px;
+		line-height: 50px;
+		border: 1px solid #000;
+		text-align: center;
+	}
+
+	.calendar-title .calendar-title-date {
 		display: flex;
 		justify-content: space-between;
-		height:50px;
-		line-height: 50px;
-		border:1px solid #000;
 	}
+
 	.calendar-title a {
-		display:inline-flex;
+		display: inline-flex;
 	}
+
 	.calendar-footer {
 		display: flex;
 		justify-content: space-between;
-		height:40px;
+		height: 40px;
 		line-height: 40px;
-		border:1px solid #000;
+		border: 1px solid #000;
 	}
+
 	.calendar-week {
-		margin:0 auto;
+		margin: 0 auto;
 		display: flex;
 	}
+
 	.calendar-panel {
-		margin:0 auto;
+		margin: 0 auto;
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.calendar-item{
-		width:41px;
-		height:50px;
-		border-right:1px solid #000;
-		border-bottom:1px solid #000;
+
+	.calendar-item {
+		box-sizing: border-box;
+		width: 42px;
+		height: 50px;
+		border-right: 1px solid #000;
+		border-bottom: 1px solid #000;
 		text-align: center;
 		line-height: 50px;
 	}
-	.calendar-item:nth-child(7n+1){
+
+	.calendar-item:nth-child(7n+1) {
 		border-left: 1px solid #000;
 	}
+
 	.calendar-panel .calendar-item.active {
-		color:#fff;
+		color: #fff;
 		background-color: #5e2c78;
 	}
+
 	.calendar-panel .calendar-item {
 		cursor: pointer;
 	}
+
 	.calendar-panel .calendar-item.disabled {
 		cursor: default;
 		background: #d7d7d7;
+	}
+
+	.clendar-month-view.calendar-panel .calendar-item {
+		width: 98px;
+	}
+
+	.clendar-month-view.calendar-panel .calendar-item:nth-child(7n+1) {
+		border-left: 0;
+	}
+
+	.clendar-month-view.calendar-panel .calendar-item:nth-child(3n+1) {
+		border-left: 1px solid #000;
 	}
 </style>
