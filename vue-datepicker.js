@@ -48,12 +48,6 @@
 		template: __webpack_require__(1),
 		replace: true,
 		inherit: true,
-		props:{
-			model: {
-				type:String,
-				required:true
-			}
-		},
 		data:function(){
 			return {
 				show:false,
@@ -175,7 +169,7 @@
 				var a = new Date(this.current.year,this.current.month-1,this.current.date);
 				var result = this.outputDate(a);
 				this.result = result;
-				this.model = result;
+				this.parent[this.child] = result;
 				this.callback(result);
 			},
 			cancel:function(){
@@ -185,8 +179,8 @@
 		},
 		watch:{
 			'show':function(newVal,oldVal){
-				if(newVal && this.model){
-					this.render(this.model);
+				if(newVal && this.parent[this.child]){
+					this.render(this.parent[this.child]);
 				}
 			}
 		}
