@@ -88,7 +88,7 @@ Vue.component('datepicker', {
       this.current.month = currentMonth - 1;
       if (currentMonth === 1) {
         this.current.month = 12;
-        this.current.year--;
+        this.prevYear(this.current.year);
       }
       this.current.date = 1;
       var d = new Date(this.current.year, this.current.month - 1, this.current.date);
@@ -99,7 +99,7 @@ Vue.component('datepicker', {
       this.current.month = currentMonth + 1;
       if (currentMonth === 12) {
         this.current.month = 1;
-        this.current.year++;
+        this.nextYear(this.current.year);
       }
       this.current.date = 1;
       var d = new Date(this.current.year, this.current.month - 1, this.current.date);
@@ -172,6 +172,11 @@ Vue.component('datepicker', {
       } else if (name === 'year') {
 
       } else if (name === 'date') {
+        this.dateList.forEach(function(c, i) {
+          if (c.checked) {
+            c.checked = false;
+          }
+        });
         this.view.dateView = true;
       }
     }
