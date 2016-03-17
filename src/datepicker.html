@@ -1,13 +1,14 @@
 <div id="vue-datepicker" v-bind:style="{left: x, top: y}" v-if="show">
 	<div class="calendar-title">
 		<div class="calendar-title-date" v-show="view.dateView">
-			<a href="javascript:;" class="arrow-left" v-on:click="prevMonth(current.month)">
-				<-</a>
-					<a href="javascript:;" v-on:click="togglePanel('month')">{{current.year}}-{{current.month}}<span v-show="current.date">-{{current.date}}</span></a>
-					<a href="javascript:;" class="arrow-right" v-on:click="nextMonth(current.month)">-></a>
+			<a href="javascript:;" class="arrow-left" v-on:click="prevMonth(current.month)">&lt;-</a>
+			<a href="javascript:;" v-on:click="togglePanel('month')">{{current.year}}-{{current.month}}<span v-show="current.date">-{{current.date}}</span></a>
+			<a href="javascript:;" class="arrow-right" v-on:click="nextMonth(current.month)">-&gt;</a>
 		</div>
 		<div class="clendar-title-month" v-show="view.monthView">
-			{{current.year}}
+			<a href="javascript:;" class="arrow-left" v-on:click="prevYear(current.year)">&lt;-</a>
+			<a href="javascript:;">{{current.year}}</a>
+			<a href="javascript:;" class="arrow-right" v-on:click="nextYear(current.year)">-&gt;</a>
 		</div>
 		<div class="clanedar-title-year" v-show="view.yearView">
 
@@ -53,7 +54,7 @@
 		text-align: center;
 	}
 
-	.calendar-title .calendar-title-date {
+	.calendar-title > div {
 		display: flex;
 		justify-content: space-between;
 	}

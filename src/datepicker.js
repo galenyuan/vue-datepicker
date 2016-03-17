@@ -106,6 +106,14 @@ Vue.component('datepicker', {
       var nextDate = this.outputDate(d);
       this.render(nextDate);
     },
+    nextYear: function(currentYear) {
+      this.current.year = ++currentYear;
+    },
+    prevYear: function(currentYear) {
+      if (currentYear > 100) {
+        this.current.year = --currentYear;
+      }
+    },
     inputDate: function(str) {
       var a, r;
       a = str.split('-');
