@@ -7,11 +7,13 @@
 		</div>
 		<div class="clendar-title-month" v-show="view.monthView">
 			<a href="javascript:;" class="arrow-left" v-on:click="prevYear(current.year)">&lt;-</a>
-			<a href="javascript:;">{{current.year}}</a>
+			<a href="javascript:;" v-on:click="togglePanel('year')">{{current.year}}</a>
 			<a href="javascript:;" class="arrow-right" v-on:click="nextYear(current.year)">-&gt;</a>
 		</div>
 		<div class="clanedar-title-year" v-show="view.yearView">
-
+			<a href="javascript:;" class="arrow-left" v-on:click="prevNineYear(current.year)">&lt;-</a>
+			<a href="javascript:;">{{current.year - 4}} - {{current.year + 4}}</a>
+			<a href="javascript:;" class="arrow-right" v-on:click="nextNineYear(current.year)">-&gt;</a>
 		</div>
 	</div>
 	<div class="calendar-date-view" v-show="view.dateView">
@@ -39,7 +41,11 @@
 			{{item.text}}
 		</div>
 	</div>
-	<div class="clendar-year-view" v-show="view.yearView"></div>
+	<div class="clendar-month-view calendar-panel" v-show="view.yearView">
+		<div class="calendar-item" v-for="item in yearList" v-on:click="chooseYear(item)">
+			{{item}}
+		</div>
+	</div>
 </div>
 <style type="text/css">
 	#vue-datepicker {

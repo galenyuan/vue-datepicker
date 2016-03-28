@@ -44,6 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
 	Vue.component('datepicker', {
 	  template: __webpack_require__(1),
 	  replace: true,
@@ -67,7 +68,8 @@
 	      dateList: [],
 	      beforeDateList: [],
 	      afterDateList: [],
-	      monthList: []
+	      monthList: [],
+	      yearList: []
 	    }
 	  },
 	  created: function() {
@@ -160,6 +162,14 @@
 	        this.current.year = --currentYear;
 	      }
 	    },
+	    nextNineYear: function(currentYear) {
+	      this.current.year = currentYear + 9;
+	      this.renderYearPanel();
+	    },
+	    prevNineYear: function(currentYear) {
+	      this.current.year = currentYear - 9;
+	      this.renderYearPanel();
+	    },
 	    inputDate: function(str) {
 	      var a, r;
 	      a = str.split('-');
@@ -193,6 +203,22 @@
 	      this.current.month = item.num;
 	      this.togglePanel('date');
 	    },
+	    chooseYear: function(item) {
+	      this.current.year = item;
+	      this.togglePanel('month');
+	    },
+	    renderYearPanel: function() {
+	      var vm = this;
+	      var s = vm.current.year - 4,
+	        e = vm.current.year + 4,
+	        l = [];
+	      for (var i = s; i <= e; i++) {
+	        l.push(i);
+	      }
+	      vm.yearList = l;
+	      vm.view.monthView = false;
+	      vm.view.yearView = true;
+	    },
 	    renderMonthPanel: function() {
 	      var vm = this;
 	      vm.current.month = 0;
@@ -216,7 +242,7 @@
 	      if (name === 'month') {
 	        this.renderMonthPanel();
 	      } else if (name === 'year') {
-
+	        this.renderYearPanel();
 	      } else if (name === 'date') {
 	        this.dateList.forEach(function(c, i) {
 	          if (c.checked) {
@@ -241,7 +267,7 @@
 /* 1 */
 /***/ function(module, exports) {
 
-	module.exports = "<div id=\"vue-datepicker\" v-bind:style=\"{left: x, top: y}\" v-if=\"show\">\n\t<div class=\"calendar-title\">\n\t\t<div class=\"calendar-title-date\" v-show=\"view.dateView\">\n\t\t\t<a href=\"javascript:;\" class=\"arrow-left\" v-on:click=\"prevMonth(current.month)\">&lt;-</a>\n\t\t\t<a href=\"javascript:;\" v-on:click=\"togglePanel('month')\">{{current.year}}-{{current.month}}<span v-show=\"current.date\">-{{current.date}}</span></a>\n\t\t\t<a href=\"javascript:;\" class=\"arrow-right\" v-on:click=\"nextMonth(current.month)\">-&gt;</a>\n\t\t</div>\n\t\t<div class=\"clendar-title-month\" v-show=\"view.monthView\">\n\t\t\t<a href=\"javascript:;\" class=\"arrow-left\" v-on:click=\"prevYear(current.year)\">&lt;-</a>\n\t\t\t<a href=\"javascript:;\">{{current.year}}</a>\n\t\t\t<a href=\"javascript:;\" class=\"arrow-right\" v-on:click=\"nextYear(current.year)\">-&gt;</a>\n\t\t</div>\n\t\t<div class=\"clanedar-title-year\" v-show=\"view.yearView\">\n\n\t\t</div>\n\t</div>\n\t<div class=\"calendar-date-view\" v-show=\"view.dateView\">\n\t\t<div class=\"calendar-week\">\n\t\t\t<div class=\"calendar-item\">Sun</div>\n\t\t\t<div class=\"calendar-item\">Mon</div>\n\t\t\t<div class=\"calendar-item\">Tue</div>\n\t\t\t<div class=\"calendar-item\">Wed</div>\n\t\t\t<div class=\"calendar-item\">Thu</div>\n\t\t\t<div class=\"calendar-item\">Fri</div>\n\t\t\t<div class=\"calendar-item\">Sat</div>\n\t\t</div>\n\t\t<div class=\"calendar-panel\">\n\t\t\t<div class=\"calendar-item disabled\" v-for=\"dateItem in beforeDateList\" track-by=\"$index\">{{dateItem}}</div>\n\t\t\t<div class=\"calendar-item\" v-for=\"dateItem in dateList\" v-bind:class=\"{'active' : dateItem.checked}\" v-on:click=\"checkDate(dateItem)\" track-by=\"$index\">{{dateItem.date}}</div>\n\t\t\t<div class=\"calendar-item disabled\" v-for=\"dateItem in afterDateList\" track-by=\"$index\">{{dateItem}}</div>\n\t\t</div>\n\t\t<div class=\"calendar-footer\">\n\t\t\t<a href=\"javascript:;\" v-on:click=\"cancel\">Cancel</a>\n\t\t\t<a href=\"javascript:;\" v-on:click=\"confirmDate\">Confirm</a>\n\t\t</div>\n\t</div>\n\t<div class=\"clendar-month-view calendar-panel\" v-show=\"view.monthView\">\n\t\t<div class=\"calendar-item\" v-for=\"item in monthList\" v-on:click=\"chooseMonth(item)\">\n\t\t\t{{item.text}}\n\t\t</div>\n\t</div>\n\t<div class=\"clendar-year-view\" v-show=\"view.yearView\"></div>\n</div>\n<style type=\"text/css\">\n\t#vue-datepicker {\n\t\twidth: 294px;\n\t\tposition: fixed;\n\t}\n\n\t.calendar-title {\n\t\theight: 50px;\n\t\tline-height: 50px;\n\t\tborder: 1px solid #000;\n\t\ttext-align: center;\n\t}\n\n\t.calendar-title > div {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t}\n\n\t.calendar-title a {\n\t\tdisplay: inline-flex;\n\t}\n\n\t.calendar-footer {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\theight: 40px;\n\t\tline-height: 40px;\n\t\tborder: 1px solid #000;\n\t}\n\n\t.calendar-week {\n\t\tmargin: 0 auto;\n\t\tdisplay: flex;\n\t}\n\n\t.calendar-panel {\n\t\tmargin: 0 auto;\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t}\n\n\t.calendar-item {\n\t\tbox-sizing: border-box;\n\t\twidth: 42px;\n\t\theight: 50px;\n\t\tborder-right: 1px solid #000;\n\t\tborder-bottom: 1px solid #000;\n\t\ttext-align: center;\n\t\tline-height: 50px;\n\t}\n\n\t.calendar-item:nth-child(7n+1) {\n\t\tborder-left: 1px solid #000;\n\t}\n\n\t.calendar-panel .calendar-item.active {\n\t\tcolor: #fff;\n\t\tbackground-color: #5e2c78;\n\t}\n\n\t.calendar-panel .calendar-item {\n\t\tcursor: pointer;\n\t}\n\n\t.calendar-panel .calendar-item.disabled {\n\t\tcursor: default;\n\t\tbackground: #d7d7d7;\n\t}\n\n\t.clendar-month-view.calendar-panel .calendar-item {\n\t\twidth: 98px;\n\t}\n\n\t.clendar-month-view.calendar-panel .calendar-item:nth-child(7n+1) {\n\t\tborder-left: 0;\n\t}\n\n\t.clendar-month-view.calendar-panel .calendar-item:nth-child(3n+1) {\n\t\tborder-left: 1px solid #000;\n\t}\n</style>\n";
+	module.exports = "<div id=\"vue-datepicker\" v-bind:style=\"{left: x, top: y}\" v-if=\"show\">\n\t<div class=\"calendar-title\">\n\t\t<div class=\"calendar-title-date\" v-show=\"view.dateView\">\n\t\t\t<a href=\"javascript:;\" class=\"arrow-left\" v-on:click=\"prevMonth(current.month)\">&lt;-</a>\n\t\t\t<a href=\"javascript:;\" v-on:click=\"togglePanel('month')\">{{current.year}}-{{current.month}}<span v-show=\"current.date\">-{{current.date}}</span></a>\n\t\t\t<a href=\"javascript:;\" class=\"arrow-right\" v-on:click=\"nextMonth(current.month)\">-&gt;</a>\n\t\t</div>\n\t\t<div class=\"clendar-title-month\" v-show=\"view.monthView\">\n\t\t\t<a href=\"javascript:;\" class=\"arrow-left\" v-on:click=\"prevYear(current.year)\">&lt;-</a>\n\t\t\t<a href=\"javascript:;\" v-on:click=\"togglePanel('year')\">{{current.year}}</a>\n\t\t\t<a href=\"javascript:;\" class=\"arrow-right\" v-on:click=\"nextYear(current.year)\">-&gt;</a>\n\t\t</div>\n\t\t<div class=\"clanedar-title-year\" v-show=\"view.yearView\">\n\t\t\t<a href=\"javascript:;\" class=\"arrow-left\" v-on:click=\"prevNineYear(current.year)\">&lt;-</a>\n\t\t\t<a href=\"javascript:;\">{{current.year - 4}} - {{current.year + 4}}</a>\n\t\t\t<a href=\"javascript:;\" class=\"arrow-right\" v-on:click=\"nextNineYear(current.year)\">-&gt;</a>\n\t\t</div>\n\t</div>\n\t<div class=\"calendar-date-view\" v-show=\"view.dateView\">\n\t\t<div class=\"calendar-week\">\n\t\t\t<div class=\"calendar-item\">Sun</div>\n\t\t\t<div class=\"calendar-item\">Mon</div>\n\t\t\t<div class=\"calendar-item\">Tue</div>\n\t\t\t<div class=\"calendar-item\">Wed</div>\n\t\t\t<div class=\"calendar-item\">Thu</div>\n\t\t\t<div class=\"calendar-item\">Fri</div>\n\t\t\t<div class=\"calendar-item\">Sat</div>\n\t\t</div>\n\t\t<div class=\"calendar-panel\">\n\t\t\t<div class=\"calendar-item disabled\" v-for=\"dateItem in beforeDateList\" track-by=\"$index\">{{dateItem}}</div>\n\t\t\t<div class=\"calendar-item\" v-for=\"dateItem in dateList\" v-bind:class=\"{'active' : dateItem.checked}\" v-on:click=\"checkDate(dateItem)\" track-by=\"$index\">{{dateItem.date}}</div>\n\t\t\t<div class=\"calendar-item disabled\" v-for=\"dateItem in afterDateList\" track-by=\"$index\">{{dateItem}}</div>\n\t\t</div>\n\t\t<div class=\"calendar-footer\">\n\t\t\t<a href=\"javascript:;\" v-on:click=\"cancel\">Cancel</a>\n\t\t\t<a href=\"javascript:;\" v-on:click=\"confirmDate\">Confirm</a>\n\t\t</div>\n\t</div>\n\t<div class=\"clendar-month-view calendar-panel\" v-show=\"view.monthView\">\n\t\t<div class=\"calendar-item\" v-for=\"item in monthList\" v-on:click=\"chooseMonth(item)\">\n\t\t\t{{item.text}}\n\t\t</div>\n\t</div>\n\t<div class=\"clendar-month-view calendar-panel\" v-show=\"view.yearView\">\n\t\t<div class=\"calendar-item\" v-for=\"item in yearList\" v-on:click=\"chooseYear(item)\">\n\t\t\t{{item}}\n\t\t</div>\n\t</div>\n</div>\n<style type=\"text/css\">\n\t#vue-datepicker {\n\t\twidth: 294px;\n\t\tposition: fixed;\n\t}\n\n\t.calendar-title {\n\t\theight: 50px;\n\t\tline-height: 50px;\n\t\tborder: 1px solid #000;\n\t\ttext-align: center;\n\t}\n\n\t.calendar-title > div {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t}\n\n\t.calendar-title a {\n\t\tdisplay: inline-flex;\n\t}\n\n\t.calendar-footer {\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\theight: 40px;\n\t\tline-height: 40px;\n\t\tborder: 1px solid #000;\n\t}\n\n\t.calendar-week {\n\t\tmargin: 0 auto;\n\t\tdisplay: flex;\n\t}\n\n\t.calendar-panel {\n\t\tmargin: 0 auto;\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t}\n\n\t.calendar-item {\n\t\tbox-sizing: border-box;\n\t\twidth: 42px;\n\t\theight: 50px;\n\t\tborder-right: 1px solid #000;\n\t\tborder-bottom: 1px solid #000;\n\t\ttext-align: center;\n\t\tline-height: 50px;\n\t}\n\n\t.calendar-item:nth-child(7n+1) {\n\t\tborder-left: 1px solid #000;\n\t}\n\n\t.calendar-panel .calendar-item.active {\n\t\tcolor: #fff;\n\t\tbackground-color: #5e2c78;\n\t}\n\n\t.calendar-panel .calendar-item {\n\t\tcursor: pointer;\n\t}\n\n\t.calendar-panel .calendar-item.disabled {\n\t\tcursor: default;\n\t\tbackground: #d7d7d7;\n\t}\n\n\t.clendar-month-view.calendar-panel .calendar-item {\n\t\twidth: 98px;\n\t}\n\n\t.clendar-month-view.calendar-panel .calendar-item:nth-child(7n+1) {\n\t\tborder-left: 0;\n\t}\n\n\t.clendar-month-view.calendar-panel .calendar-item:nth-child(3n+1) {\n\t\tborder-left: 1px solid #000;\n\t}\n</style>\n";
 
 /***/ }
 /******/ ]);

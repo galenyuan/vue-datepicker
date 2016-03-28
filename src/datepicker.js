@@ -1,3 +1,4 @@
+'use strict';
 Vue.component('datepicker', {
   template: require('./datepicker.html'),
   replace: true,
@@ -21,7 +22,8 @@ Vue.component('datepicker', {
       dateList: [],
       beforeDateList: [],
       afterDateList: [],
-      monthList: []
+      monthList: [],
+      yearList: []
     }
   },
   created: function() {
@@ -114,6 +116,14 @@ Vue.component('datepicker', {
         this.current.year = --currentYear;
       }
     },
+    nextNineYear: function(currentYear) {
+      this.current.year = currentYear + 9;
+      this.renderYearPanel();
+    },
+    prevNineYear: function(currentYear) {
+      this.current.year = currentYear - 9;
+      this.renderYearPanel();
+    },
     inputDate: function(str) {
       var a, r;
       a = str.split('-');
@@ -147,6 +157,22 @@ Vue.component('datepicker', {
       this.current.month = item.num;
       this.togglePanel('date');
     },
+    chooseYear: function(item) {
+      this.current.year = item;
+      this.togglePanel('month');
+    },
+    renderYearPanel: function() {
+      var vm = this;
+      var s = vm.current.year - 4,
+        e = vm.current.year + 4,
+        l = [];
+      for (var i = s; i <= e; i++) {
+        l.push(i);
+      }
+      vm.yearList = l;
+      vm.view.monthView = false;
+      vm.view.yearView = true;
+    },
     renderMonthPanel: function() {
       var vm = this;
       vm.current.month = 0;
@@ -170,7 +196,7 @@ Vue.component('datepicker', {
       if (name === 'month') {
         this.renderMonthPanel();
       } else if (name === 'year') {
-
+        this.renderYearPanel();
       } else if (name === 'date') {
         this.dateList.forEach(function(c, i) {
           if (c.checked) {
