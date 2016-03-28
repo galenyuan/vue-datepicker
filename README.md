@@ -44,7 +44,7 @@ You can also see demo in [here](https://github.com/galenyuan/vue-datepicker/tree
 - Prev Month & Next Month **[Done]**
 - Date Checker **[Done]**
 - Save result to model **[Done]**
-- Month Panel & Year Panel **[In Progress]**
+- Month Panel & Year Panel **[Done]**
 - Build with Webpack **[Done]**
 - Make it as a Plug-in of Vue **[In Progress]**
 - Rewirte style with Bootstrap **[Maybe**]
