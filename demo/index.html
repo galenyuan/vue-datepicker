@@ -8,29 +8,22 @@
 
 <body>
 	<div id="wrap">
-		<input v-model="date" type="text" readonly v-on:focus="showCalendar($event,this,'date')">
+		<input v-model="date" type="text" readonly v-datepicker="date">
 		<datepicker v-ref:datepicker></datepicker>
 	</div>
 	<script src="../lib/vue.js"></script>
 	<script src="../vue-datepicker.js"></script>
 	<script type="text/javascript">
+		Vue.use(DatePicker, {
+			event: 'focus',
+			callback: function(result) {
+				console.log(result);
+			}
+		});
 		var app = new Vue({
 			el: "#wrap",
 			data: {
 				date: '2016-2-9'
-			},
-			methods: {
-				showCalendar: function(e, parent, child) {
-					var vm = this;
-					vm.$refs.datepicker.parent = parent;
-					vm.$refs.datepicker.child = child;
-					vm.$refs.datepicker.show = true;
-					vm.$refs.datepicker.x = e.target.offsetLeft;
-					vm.$refs.datepicker.y = e.target.offsetTop + e.target.offsetHeight + 10;
-					vm.$refs.datepicker.callback = function(result) {
-						console.log(result);
-					}
-				}
 			}
 		});
 	</script>
