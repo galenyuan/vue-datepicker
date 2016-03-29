@@ -6,33 +6,21 @@ A date picker for [Vuejs](https://github.com/vuejs/vue/ "Vue"), it's still in de
 HTML:
 
 ```html
-<input v-model="your-model" type="text" readonly v-on:focus="showCalendar($event,parent,'child')">
-```
-
-parent should be a **variable** and child should be a **string**, so that **parent[child]** can read your property.
-
-```html
+<input v-model="your-model" type="text" readonly v-datepicker='model'>
 <datepicker v-ref:datepicker></datepicker>
 <script src="path/to/vue-datepicker.js"></script>
 <script type="text/javascript">
+    Vue.use(DatePicker, {
+      event: 'focus', //use event which you want to trigger datepicker
+      callback: function(result) {
+        console.log(result); //this function will be triggered after you click confirm in date picker
+      }
+    });
     var app = new Vue({
-        el:"your-el",
-        data:{
-            date:'2016-2-9'
-        },
-        methods:{
-            showCalendar:function(e,parent,child){
-                var vm = this;
-                vm.$refs.datepicker.parent = parent;
-                vm.$refs.datepicker.child = child;
-                vm.$refs.datepicker.show = true;
-                vm.$refs.datepicker.x = e.target.offsetLeft;
-                vm.$refs.datepicker.y = e.target.offsetTop + e.target.offsetHeight + 10;
-                vm.$refs.datepicker.callback = function(result) {
-                    console.log(result);
-                }
-            }
-        }
+      el:"your-el",
+      data:{
+          date:'2016-2-9'
+      }
     });
 </script>
 ```
@@ -46,7 +34,7 @@ You can also see demo in [here](https://github.com/galenyuan/vue-datepicker/tree
 - Save result to model **[Done]**
 - Month Panel & Year Panel **[Done]**
 - Build with Webpack **[Done]**
-- Make it as a Plug-in of Vue **[In Progress]**
+- Make it as a Plug-in of Vue **[Done]**
 - Rewirte style with Bootstrap **[Maybe**]
 - Make it Responsive **[Maybe]**
 - Time Picker **[Maybe]**
