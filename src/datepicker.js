@@ -1,3 +1,8 @@
+/*
+ * Vue-datepicker
+ * Galen Yuan
+ * 363693158@qq.com
+ */
 'use strict';
 window.DatePicker = window.DatePicker || {};
 DatePicker.install = function(Vue, options) {
