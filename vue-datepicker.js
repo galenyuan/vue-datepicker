@@ -63,7 +63,6 @@
 	            options[a] = defaults[a];
 	        }
 	    }
-	    console.log(options);
 	    Vue.directive('datepicker', {
 	        bind: function() {
 	            var dir = this,
