@@ -15,10 +15,7 @@
 	<script src="../vue-datepicker.js"></script>
 	<script type="text/javascript">
 		Vue.use(DatePicker, {
-			event: 'focus',
-			callback: function(result) {
-				console.log(result);
-			}
+			event: 'click'
 		});
 		var app = new Vue({
 			el: "#wrap",
