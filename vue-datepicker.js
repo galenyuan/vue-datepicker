@@ -222,12 +222,12 @@
 	                return r;
 	            },
 	            confirmDate: function() {
-	                var vm = this;
+	                var vm = this,
+	                    a = new Date(vm.current.year, vm.current.month - 1, vm.current.date),
+	                    result = vm.outputDate(a);
 	                vm.show = false;
-	                var a = new Date(vm.current.year, vm.current.month - 1, vm.current.date);
-	                var result = vm.outputDate(a);
 	                vm.result = result;
-	                eval('vm.$parent.' + vm.expression + ' = result');
+	                setter(vm.$parent, vm.expression, result);
 	                vm.callback(result);
 	            },
 	            cancel: function() {
@@ -290,7 +290,7 @@
 	        },
 	        watch: {
 	            'show': function(newVal, oldVal) {
-	                var m = eval('this.$parent.' + this.expression + '');
+	                var m = getter(this.$parent, this.expression);
 	                var r = new Date(m);
 	                if (isNaN(r.valueOf())) {
 	                    this.render();
@@ -302,8 +302,44 @@
 	            }
 	        }
 	    });
-	}
+	    function getter(obj, expression) {
+	        var parts = expression.split('.');
+	        if (Array.isArray(parts)) {
+	            var last = parts.pop(),
+	                l = parts.length,
+	                i = 1,
+	                current = parts[0];
 
+	            parts.forEach(function(c, i){
+	                obj = obj[current];
+	                current = c;
+	            });
+	            if (obj) {
+	                return obj[last];
+	            }
+	        } else {
+	            throw 'parts is not valid array';
+	        }
+	    }
+	    function setter(obj, expression, value) {
+	        var parts = expression.split('.');
+	        if (Array.isArray(parts)) {
+	            var last = parts.pop(),
+	                l = parts.length,
+	                i = 1,
+	                current = parts[0];
+	            parts.forEach(function(c, i){
+	                obj = obj[current];
+	                current = c;
+	            });
+	            if (obj) {
+	                obj[last] = value;
+	            }
+	        } else {
+	            throw 'parts is not valid array';
+	        }
+	    }
+	}
 
 /***/ },
 /* 1 */
