@@ -8,7 +8,8 @@ window.DatePicker = window.DatePicker || {};
 DatePicker.install = function(Vue, options) {
     var defaults = {
         event: 'focus',
-        callback: function(result) {
+        callback: function(expression,result) {
+            console.log(expression);
             console.log(result);
         }
     };
@@ -24,8 +25,8 @@ DatePicker.install = function(Vue, options) {
                 el = this.el,
                 model = 'vm.' + dir.expression + '',
                 component = vm.$refs.datepicker;
-            component.callback = options.callback;
-            el.addEventListener(options.event, function(e) {
+                component.callback = options.callback;
+                el.addEventListener(options.event, function(e) {
                 component.show = true;
                 component.x = e.target.offsetLeft;
                 component.y = e.target.offsetTop + e.target.offsetHeight + 10;
@@ -182,7 +183,7 @@ DatePicker.install = function(Vue, options) {
                 vm.show = false;
                 vm.result = result;
                 setter(vm.$parent, vm.expression, result);
-                vm.callback(result);
+                vm.callback(vm.expression,result);
             },
             cancel: function() {
                 this.init();
