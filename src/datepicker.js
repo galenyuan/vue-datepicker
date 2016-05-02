@@ -8,9 +8,10 @@ window.DatePicker = window.DatePicker || {};
 DatePicker.install = function(Vue, options) {
     var defaults = {
         event: 'focus',
-        callback: function(expression,result) {
-            console.log(expression);
-            console.log(result);
+        callback: function(expression, result, dom) {
+            console.log("DOM", dom);
+            console.log("expression", expression);
+            console.log("result", result);
         }
     };
     for (var a in defaults) {
@@ -25,12 +26,13 @@ DatePicker.install = function(Vue, options) {
                 el = this.el,
                 model = 'vm.' + dir.expression + '',
                 component = vm.$refs.datepicker;
-            component.callback = options.callback;
+                component.callback = options.callback;
             el.addEventListener(options.event, function(e) {
-            component.show = true;
+                component.show = true;
                 component.x = e.target.offsetLeft;
                 component.y = e.target.offsetTop + e.target.offsetHeight + 10;
                 component.expression = dir.expression;
+                component.dom = e.target;
             })
         }
     })
@@ -76,6 +78,7 @@ DatePicker.install = function(Vue, options) {
                     }
                 });
             },
+
             render: function(model) {
                 if (model) {
                     var currentDate = this.inputDate(model);
@@ -188,7 +191,7 @@ DatePicker.install = function(Vue, options) {
                 vm.show = false;
                 vm.result = result;
                 setter(vm.$parent, vm.expression, result);
-                vm.callback(vm.expression,result);
+                vm.callback(vm.expression, result, vm.dom);
             },
 
             cancel: function() {
@@ -217,6 +220,7 @@ DatePicker.install = function(Vue, options) {
                 vm.view.monthView = false;
                 vm.view.yearView = true;
             },
+
             renderMonthPanel: function() {
                 var vm = this;
                 vm.current.month = 0;
@@ -233,6 +237,7 @@ DatePicker.install = function(Vue, options) {
                 }
                 vm.view.monthView = true;
             },
+            
             togglePanel: function(name) {
                 this.view.dateView = false;
                 this.view.monthView = false;
@@ -265,6 +270,7 @@ DatePicker.install = function(Vue, options) {
             }
         }
     });
+
     function getter(obj, expression) {
         var parts = expression.split('.');
         if (Array.isArray(parts)) {
@@ -284,6 +290,7 @@ DatePicker.install = function(Vue, options) {
             throw 'parts is not valid array';
         }
     }
+
     function setter(obj, expression, value) {
         var parts = expression.split('.');
         if (Array.isArray(parts)) {
