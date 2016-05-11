@@ -12,7 +12,10 @@ HTML:
 <script type="text/javascript">
     Vue.use(DatePicker, {
       event: 'focus', //use event which you want to trigger datepicker
-      callback: function(result) {
+      callback: function(result, expression, el) {
+        // do what you like in this callback function, result,expression and element will be provided
+        console.log(el);
+        console.log(expression);
         console.log(result); //this function will be triggered after you click confirm in date picker
       }
     });
