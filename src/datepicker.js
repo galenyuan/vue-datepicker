@@ -8,7 +8,8 @@ window.DatePicker = window.DatePicker || {};
 DatePicker.install = function(Vue, options) {
     var defaults = {
         event: 'focus',
-        callback: function(result) {
+        callback: function(expression,result) {
+            console.log(expression);
             console.log(result);
         }
     };
@@ -26,7 +27,7 @@ DatePicker.install = function(Vue, options) {
                 component = vm.$refs.datepicker;
             component.callback = options.callback;
             el.addEventListener(options.event, function(e) {
-                component.show = true;
+            component.show = true;
                 component.x = e.target.offsetLeft;
                 component.y = e.target.offsetTop + e.target.offsetHeight + 10;
                 component.expression = dir.expression;
@@ -111,6 +112,7 @@ DatePicker.install = function(Vue, options) {
                     this.afterDateList.push(i);
                 }
             },
+
             checkDate: function(item) {
                 this.dateList.forEach(function(c, i) {
                     if (c.checked) {
@@ -120,6 +122,7 @@ DatePicker.install = function(Vue, options) {
                 item.checked = true;
                 this.current.date = item.date;
             },
+
             prevMonth: function(currentMonth) {
                 this.current.month = currentMonth - 1;
                 if (currentMonth === 1) {
@@ -142,6 +145,7 @@ DatePicker.install = function(Vue, options) {
                 var nextDate = this.outputDate(d);
                 this.render(nextDate);
             },
+
             nextYear: function(currentYear) {
                 this.current.year = ++currentYear;
             },
@@ -150,6 +154,7 @@ DatePicker.install = function(Vue, options) {
                     this.current.year = --currentYear;
                 }
             },
+
             nextNineYear: function(currentYear) {
                 this.current.year = currentYear + 9;
                 this.renderYearPanel();
@@ -158,6 +163,7 @@ DatePicker.install = function(Vue, options) {
                 this.current.year = currentYear - 9;
                 this.renderYearPanel();
             },
+
             inputDate: function(str) {
                 var a, r;
                 a = str.split('-');
@@ -182,12 +188,14 @@ DatePicker.install = function(Vue, options) {
                 vm.show = false;
                 vm.result = result;
                 setter(vm.$parent, vm.expression, result);
-                vm.callback(result);
+                vm.callback(vm.expression,result);
             },
+
             cancel: function() {
                 this.init();
                 this.show = false;
             },
+
             chooseMonth: function(item) {
                 this.current.month = item.num;
                 this.togglePanel('date');
@@ -196,6 +204,7 @@ DatePicker.install = function(Vue, options) {
                 this.current.year = item;
                 this.togglePanel('month');
             },
+            
             renderYearPanel: function() {
                 var vm = this;
                 var s = vm.current.year - 4,
