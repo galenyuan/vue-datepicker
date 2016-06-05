@@ -1,6 +1,11 @@
 <template>
-  <div class="datepicker">
-    
+  <div class="datepicker-container">
+    <input type="text" v-model="model" readonly @click="showDatepicker($event)" />
+
+    <div class="datepicker" v-if="config.show">
+      <div class="picker"></div>
+      <div class="overlay"></div>
+    </div>
   </div>
 </template>
 
@@ -11,9 +16,15 @@ export default {
   data () {
     return {
       config: {
+        show: false,
         dates: [],
         beforeMonth: [],
         afterMonth: []
+      },
+
+      style: {
+        top: 0,
+        left: 0
       },
 
       selected: {
@@ -43,6 +54,11 @@ export default {
       }
 
       this.renderCurrent(date);      
+    },
+
+    showDatepicker (e) {
+      console.log(e);
+      this.config.show = true;
     },
 
     getDateObj (str) {
@@ -88,7 +104,7 @@ export default {
     setDateList (year, month, date, firstDay, lastDay) {
       this.setBeforeList(year, month, date, firstDay);
       this.setAfterList(year, month, date, lastDay);
-      console.log(lastDay)
+
       for(let i = 1; i <= lastDay; i++ ) {
         let checked = false;
         if(i == date){
@@ -114,8 +130,40 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1 {
-  color: #42b983;
-}
+<style lang="scss">
+  .datepicker-container {
+    display: inline-block;
+  }
+
+  .datepicker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background: #000;
+      opacity: .6;
+    }
+
+    .picker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 60%;
+      height: 200px;
+      z-index: 9999;
+      margin: auto;
+      background: #fff;
+    }
+  }
 </style>

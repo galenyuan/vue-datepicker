@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <datepicker :model="date"></datepicker>
+    <span>Choose Date:</span><datepicker :model.sync="date"></datepicker>
   </div>
 </template>
 
