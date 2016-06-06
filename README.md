@@ -1,6 +1,6 @@
-# vue-datepicker
+# Vue Datepicker
 
-> Datepicker for Vuejs
+> Here is a Datepicker plug-in for Vuejs
 
 ## Build Setup
 
@@ -8,20 +8,32 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# run the demo at localhost:8080
 npm run dev
 
-# build for production with minification
-npm run build
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
+##Usage
+```vue
+<template>
+  <div id="app">
+    <span>Choose Date:</span><datepicker :model.sync="date"></datepicker>
+  </div>
+</template>
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+<script>
+import datepicker from './components/DatePicker'
+
+export default {
+  data () {
+    return {
+      date: ''
+    }
+  },
+
+  components: {
+    datepicker
+  }
+}
+</script>
+
+```
