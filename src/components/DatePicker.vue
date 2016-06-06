@@ -3,9 +3,27 @@
     <input type="text" v-model="model" readonly @click="showDatepicker($event)" />
 
     <div class="datepicker" v-if="config.show">
-      <div class="picker"></div>
+      <div class="picker">
+        <div class="picker-header">
+          <a class="picker-arrow arrow-left" href="javascript:;" @click="goToMonth('prev')"><</a><a class="picker-header-title" href="javasciprt:;">
+            <span v-if="selected.year !== null">{{selected.year}}年</span>
+            <span v-if="selected.month !== null">{{selected.month + 1}}月</span>
+            <span v-if="selected.date !== null">{{selected.date}}日</span>
+          </a><a class="picker-arrow arrow-right" href="javascript:;" @click="goToMonth('next')">></a>
+        </div>
+        <div class="picker-content">
+          <div class="picker-content-item" v-for="item in config.weekDay">{{item}}</div>
+        </div>
+        <div class="picker-content">
+          <div class="picker-content-item picker-content-item-date disabled" v-for="item in config.beforeMonth">{{item}}</div>
+          <div class="picker-content-item picker-content-item-date" v-for="item in config.dates" v-bind:class="{selected : item.selected}" @click="setDate(item)">{{item.text}}</div>
+          <div class="picker-content-item picker-content-item-date disabled" v-for="item in config.afterMonth">{{item}}</div>
+        </div>
+      </div>
+
       <div class="overlay"></div>
     </div>
+
   </div>
 </template>
 
@@ -19,7 +37,8 @@ export default {
         show: false,
         dates: [],
         beforeMonth: [],
-        afterMonth: []
+        afterMonth: [],
+        weekDay: ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat']
       },
 
       style: {
@@ -28,9 +47,9 @@ export default {
       },
 
       selected: {
-        year: 0,
-        month: 0,
-        date: 0
+        year: null,
+        month: null,
+        date: null
       }
     }
   },
@@ -48,7 +67,7 @@ export default {
       let date = null;
 
       if(selected) {
-        date = getDateObj(selected);
+        date = this.getDateObj(selected);
       }else {
         date = new Date();
       }
@@ -57,13 +76,20 @@ export default {
     },
 
     showDatepicker (e) {
-      console.log(e);
       this.config.show = true;
     },
 
     getDateObj (str) {
       let arr = str.split('-');
-      return new Date(arr[0], arr[1], arr[2]);
+      return new Date(arr[0], --arr[1], arr[2]);
+    },
+
+    getDateStr (obj) {
+      let year = obj.getFullYear().toString(),
+          month = (obj.getMonth() + 1).toString(),
+          date = obj.getDate().toString();
+
+      return year + '-' + month + '-' + date;
     },
 
     renderCurrent (current) {
@@ -74,7 +100,7 @@ export default {
           lastDay = this.getLastDay(year, month).getDate();
 
       this.setDateList(year, month, date, firstDay, lastDay);
-      this.setCurrent(year, month, date)
+      this.setCurrent(year, month, date);
     },
 
     getFirstDay (year, month) {
@@ -102,18 +128,22 @@ export default {
     },
 
     setDateList (year, month, date, firstDay, lastDay) {
+      this.config.dates = [];
+      this.config.beforeMonth = [];
+      this.config.afterMonth = [];
+
       this.setBeforeList(year, month, date, firstDay);
       this.setAfterList(year, month, date, lastDay);
 
       for(let i = 1; i <= lastDay; i++ ) {
-        let checked = false;
+        let selected = false;
         if(i == date){
-          checked = true;
+          selected = true;
         }
 
         this.config.dates.push({
           text: i,
-          checked: checked
+          selected: selected
         });
       }
     },
@@ -124,8 +154,51 @@ export default {
       selected.year = year;
       selected.month = month;
       selected.date = date;
-    }
-  }
+    },
+
+    goToMonth (month) {
+      let res = this.selected.month;
+
+      if(month == 'next') {
+        res ++;
+      }else if(month =='prev') {
+        res --;
+      }else {
+        res = month;
+      }
+
+      res = this.validMonth(res);
+      let str = this.getDateStr(new Date(this.selected.year, res, this.selected.date));
+
+      this.render(str);
+    },
+
+    setDate(item) {
+      this.config.dates.forEach((date) => {
+        if(date.selected) {
+          date.selected = false;
+        }
+      });
+
+      item.selected = true;
+      this.selected.date = item.text;
+    },
+
+    validMonth (month) {
+      if(month < 0 || month >= 12) {
+        if(month < 0) {
+          this.selected.year--;
+          return 11;
+        }else {
+          this.selected.year++;
+          return 0;
+        } 
+      } else {
+        return month;
+      }
+    } 
+  },
+
 }
 </script>
 
@@ -155,15 +228,53 @@ export default {
 
     .picker {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 60%;
-      height: 200px;
+      height: 240px;
       z-index: 9999;
       margin: auto;
+      padding: 10px;
       background: #fff;
+
+      &-header {
+        white-space: nowrap;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        a {
+          display: inline-block;
+          white-space: normal;
+        }
+        .picker-arrow {
+          width: 10%;
+          text-align: center;
+        }
+        &-title {
+          width: 80%;
+          text-align: center;
+        }
+      }
+      &-content {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        &-item {
+          display: inline-block;
+          width:14%;
+          text-align: center;
+          &-date {
+            padding-top: 5px;
+            padding-bottom: 5px;
+          }
+          &.selected {
+            color: red;
+          }
+          &.disabled {
+            color: #c7c7cc;
+          }
+        }
+      }
     }
   }
 </style>
