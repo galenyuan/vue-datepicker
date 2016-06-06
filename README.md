@@ -37,3 +37,9 @@ export default {
 </script>
 
 ```
+##Todo
+
+- Month panel and Year panel.
+- Animation of toggle datepicker.
+- Make it beautiful.
+- Optimize.

@@ -1,6 +1,6 @@
 <template>
   <div class="datepicker-container">
-    <input type="text" v-model="model" readonly @click="showDatepicker($event)" />
+    <input type="text" v-model="model" readonly @click="showDatepicker()" />
 
     <div class="datepicker" v-if="config.show">
       <div class="picker">
@@ -11,13 +11,17 @@
             <span v-if="selected.date !== null">{{selected.date}}日</span>
           </a><a class="picker-arrow arrow-right" href="javascript:;" @click="goToMonth('next')">></a>
         </div>
-        <div class="picker-content">
-          <div class="picker-content-item" v-for="item in config.weekDay">{{item}}</div>
+        <div class="picker-week">
+          <div class="picker-week-item" v-for="item in config.weekDay">{{item}}</div>
         </div>
         <div class="picker-content">
           <div class="picker-content-item picker-content-item-date disabled" v-for="item in config.beforeMonth">{{item}}</div>
           <div class="picker-content-item picker-content-item-date" v-for="item in config.dates" v-bind:class="{selected : item.selected}" @click="setDate(item)">{{item.text}}</div>
           <div class="picker-content-item picker-content-item-date disabled" v-for="item in config.afterMonth">{{item}}</div>
+        </div>
+        <div class="picker-footer">
+          <a href="javascript:;" class="picker-footer-button" @click="cancel()">Cancel</a>
+          <a href="javascript:;" class="picker-footer-button" @click="confirm()">Confirm</a>
         </div>
       </div>
 
@@ -54,10 +58,6 @@ export default {
     }
   },
 
-  ready () {
-    this.init();
-  },
-
   methods: {
     init () {
       this.render(this.model);
@@ -75,7 +75,8 @@ export default {
       this.renderCurrent(date);      
     },
 
-    showDatepicker (e) {
+    showDatepicker () {
+      this.init();
       this.config.show = true;
     },
 
@@ -196,7 +197,16 @@ export default {
       } else {
         return month;
       }
-    } 
+    },
+
+    confirm () {
+      this.model = this.getDateStr(new Date(this.selected.year, this.selected.month, this.selected.date));
+      this.config.show = false;
+    },
+
+    cancel () {
+      this.config.show = false;
+    }
   },
 
 }
@@ -214,6 +224,10 @@ export default {
     left: 0;
     height: 100%;
     width: 100%;
+    
+    & * {
+      box-sizing: border-box;
+    }
 
     .overlay {
       position: absolute;
@@ -232,16 +246,17 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       width: 60%;
-      height: 240px;
+      min-height: 290px;
       z-index: 9999;
       margin: auto;
-      padding: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
       background: #fff;
 
       &-header {
         white-space: nowrap;
-        padding-top: 5px;
-        padding-bottom: 5px;
+        height: 40px;
+        line-height: 40px;
 
         a {
           display: inline-block;
@@ -256,9 +271,19 @@ export default {
           text-align: center;
         }
       }
+      
+      &-week {
+        height: 40px;
+        line-height: 40px;
+        &-item {
+          display: inline-block;
+          width: 14%;
+          text-align: center;
+        }
+      }
+
       &-content {
-        padding-top: 5px;
-        padding-bottom: 5px;
+        min-height: 170px;
         &-item {
           display: inline-block;
           width:14%;
@@ -273,6 +298,16 @@ export default {
           &.disabled {
             color: #c7c7cc;
           }
+        }
+      }
+
+      &-footer {
+        height: 40px;
+        line-height: 40px;
+        text-align: right;
+        border-top: #333 solid 1px;
+        &-button {
+          display: inline-block;
         }
       }
     }
